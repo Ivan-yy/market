@@ -24,7 +24,7 @@ public class TestServiceImpl implements ITestService{
         ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
         Connection connection = activeMQConnectionFactory.createConnection();
         connection.start();
-        Session session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);
+        Session session = connection.createSession(true,Session.AUTO_ACKNOWLEDGE);
 
         Queue queue = session.createQueue("activemq-queue");
         MessageProducer producer = session.createProducer(queue);
@@ -37,10 +37,11 @@ public class TestServiceImpl implements ITestService{
             MapMessage mapMessage = session.createMapMessage();
             mapMessage.setString("msg1","sos");
             producer.send(mapMessage);
-
-
+            System.out.println("生产者生产消息: "+mapMessage.toString());
         }
         producer.close();
+        //创建session时transacted设置为true时必须提交或者回滚
+        session.commit();
         session.close();
         connection.close();
     }
