@@ -15,8 +15,8 @@ import javax.jms.*;
  * @author Ivan yu
  * @date 2020/08/01
  */
-@Service
-public class TestServiceImpl implements ITestService{
+
+public class ProviderService {
     @Value("${queue}")
     private String queueName;
 

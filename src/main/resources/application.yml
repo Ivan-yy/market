@@ -1,3 +1,6 @@
+server:
+  port: 7077
+
 spring:
   activemq:
     broker-url: tcp://localhost:61616
