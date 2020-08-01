@@ -1,0 +1,13 @@
+spring:
+  activemq:
+    broker-url: tcp://localhost:61616
+    user: admin
+    password: admin
+    close-timeout: 15s #考虑结束之前等待时间
+    send-timeout: 0 #等待消息发送响应时间 0为永远
+
+  jms:
+    pub-sub-domain: false #false = queue, true = topic
+
+
+queue: activemq-queue
