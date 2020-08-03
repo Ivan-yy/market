@@ -1,26 +1,28 @@
 package com.yy.market.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.jms.*;
-import java.util.UUID;
 
 /**
  * @author Ivan yu
  * @date 2020/08/01
  */
+@Slf4j
 @Component
 public class ConsumerService {
     @Autowired
     JmsMessagingTemplate jmsMessagingTemplate;
-    @Autowired
-    Queue queue;
 
-    public void produceMsg(){
-        jmsMessagingTemplate.convertAndSend(queue, UUID.randomUUID().toString());
+    @JmsListener(destination = "${queue}")
+    public void receive(Message message)throws Exception{
+        log.info("*** consumer :"+message.toString());
     }
 
     public static void main(String[] args) throws Exception{

@@ -1,24 +1,50 @@
 package com.yy.market.service.impl;
 
-import com.yy.market.service.ITestService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import org.springframework.jms.core.JmsMessagingTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.jms.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
  * @author Ivan yu
  * @date 2020/08/01
  */
-
+@Slf4j
+@Service
 public class ProviderService {
-    @Value("${queue}")
-    private String queueName;
+    @Autowired
+    JmsMessagingTemplate jmsMessagingTemplate;
+    @Autowired
+    Queue queue;
+
+    public void produceMsg(){
+        HashMap<Object, Object> map = new HashMap<>();
+        map.put("xxx","xxx");
+        jmsMessagingTemplate.convertAndSend(queue, map);
+        log.info("*** producer :"+map.toString());
+    }
+
+    /**
+     * 3000ms发一次消息
+     */
+    @Scheduled(fixedDelay = 3000)
+    public void produceMsgSchedule(){
+        Map<String,Object> map = new HashMap<>();
+        map.put("123","new Object()");
+        map.put("321",new Integer(2));
+        jmsMessagingTemplate.convertAndSend(queue,map);
+        log.info("*** producer :"+map.toString());
+        jmsMessagingTemplate.convertAndSend(queue,new ArrayList<>());
+        log.info("*** producer :"+"111");
+    }
 
     public static void main(String[] args) throws Exception{
         ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
