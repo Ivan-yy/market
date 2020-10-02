@@ -5,6 +5,8 @@ import com.yy.market.service.impl.TestServiceImpl;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author Ivan yu
@@ -34,6 +36,12 @@ public class Handler implements InvocationHandler {
         ITestService testService = new TestServiceImpl();
         ITestService proxyInstance = (ITestService) new Handler(testService).getProxyInstance();
         System.out.println(proxyInstance.doGet("x","1","2"));
+        LinkedHashMap<String, String> linkedHashMap = new LinkedHashMap<String, String>(10,0.75f,true){
+            @Override
+            protected boolean removeEldestEntry(Map.Entry eldest) {
+                return super.removeEldestEntry(eldest);
+            }
+        };
     }
 
 }
