@@ -36,12 +36,23 @@ public class Handler implements InvocationHandler {
         ITestService testService = new TestServiceImpl();
         ITestService proxyInstance = (ITestService) new Handler(testService).getProxyInstance();
         System.out.println(proxyInstance.doGet("x","1","2"));
-        LinkedHashMap<String, String> linkedHashMap = new LinkedHashMap<String, String>(10,0.75f,true){
+        LinkedHashMap<String, String> linkedHashMap = new LinkedHashMap<String, String>(8,0.75f,true){
             @Override
             protected boolean removeEldestEntry(Map.Entry eldest) {
-                return super.removeEldestEntry(eldest);
+                return size() > 5;
             }
         };
+        linkedHashMap.put("a","999");
+
+        linkedHashMap.put("b","999");
+        linkedHashMap.put("c","999");
+        linkedHashMap.put("d","999");
+        linkedHashMap.put("e","999");
+        linkedHashMap.get("a");
+        linkedHashMap.put("f","999");
+        linkedHashMap.put("g","999");
+        linkedHashMap.put("h","999");
+        System.out.println(linkedHashMap);
     }
 
 }
